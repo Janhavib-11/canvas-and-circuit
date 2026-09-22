@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import CircuitBrush from '../components/CircuitBrush.jsx'
@@ -92,20 +92,76 @@ export default function Landing() {
   const ease = [0.22, 1, 0.36, 1]
   const vp = { once: true, amount: 0.3, root: scrollerRef }
 
+  // Strengthen the navbar's frosted glass once the hero starts scrolling.
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const el = scrollerRef.current
+    if (!el) return
+    const onScroll = () => setScrolled(el.scrollTop > 24)
+    onScroll()
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <main
       ref={scrollerRef}
       className="hero-scroller h-screen snap-y snap-proximity overflow-y-auto overflow-x-hidden bg-art-bg text-art-ink"
     >
-      {/* minimal top bar */}
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-40">
+      {/* polished frosted navbar */}
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+          scrolled
+            ? 'border-b border-art-ink/10 bg-art-bg/60 shadow-[0_8px_30px_-12px_rgba(56,41,27,0.18)] backdrop-blur-xl backdrop-saturate-150'
+            : 'border-b border-transparent bg-transparent'
+        }`}
+      >
         <div className="container-page flex h-16 items-center justify-between">
-          <Link to="/" className="pointer-events-auto font-display text-lg text-art-ink">
+          <Link to="/" className="font-display text-lg text-art-ink">
             <span className="font-semibold">Canvas</span>
             <span className="text-brand-accent"> &amp; </span>
             <span className="italic">Circuit</span>
           </Link>
-          <div className="pointer-events-auto hidden items-center gap-5 sm:flex">
+
+          <div className="hidden items-center gap-6 md:flex">
+            <Link to="/technical" className="label text-art-muted transition-colors hover:text-art-ink">
+              Technical
+            </Link>
+            <Link to="/creative" className="label text-art-muted transition-colors hover:text-art-ink">
+              Creative
+            </Link>
+            <span className="h-4 w-px bg-art-ink/15" />
+            <div className="flex items-center gap-2">
+              {[
+                { name: 'github', label: 'GitHub', href: site.links.github },
+                { name: 'linkedin', label: 'LinkedIn', href: site.links.linkedin },
+                { name: 'pinterest', label: 'Pinterest', href: site.links.pinterest },
+              ].map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  title={s.label}
+                  className="grid h-8 w-8 place-items-center rounded-full text-art-muted transition-colors hover:bg-art-ink/5 hover:text-brand-accent"
+                >
+                  <Icon name={s.name} className="h-[15px] w-[15px]" />
+                </a>
+              ))}
+            </div>
+            <a
+              href={site.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full bg-art-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.12em] text-art-bg transition-colors hover:bg-brand-accent"
+            >
+              Résumé
+            </a>
+          </div>
+
+          {/* compact right side on small screens */}
+          <div className="flex items-center gap-4 md:hidden">
             <Link to="/technical" className="label text-art-muted hover:text-art-ink">
               Technical
             </Link>
@@ -114,7 +170,7 @@ export default function Landing() {
             </Link>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* ===================== PANEL 1 — ZARA-style full-bleed editorial hero ===================== */}
       <section
