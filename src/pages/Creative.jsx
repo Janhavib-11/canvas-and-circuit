@@ -6,7 +6,6 @@ import Reveal from '../components/Reveal.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import LazyImage from '../components/LazyImage.jsx'
 import Lightbox from '../components/Lightbox.jsx'
-import Contact from '../components/Contact.jsx'
 import WorksWheel from '../components/ui/works-wheel.jsx'
 import { useSEO } from '../hooks/useSEO.js'
 import { site } from '../data/site.js'
@@ -341,7 +340,6 @@ export default function Creative() {
         </div>
       </section>
 
-      <Contact world="art" />
       <Footer world="art" />
 
       <Lightbox

@@ -4,7 +4,6 @@ import Footer from '../components/Footer.jsx'
 import Reveal from '../components/Reveal.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import LazyImage from '../components/LazyImage.jsx'
-import Contact from '../components/Contact.jsx'
 import { useSEO } from '../hooks/useSEO.js'
 import { site } from '../data/site.js'
 import { skillGroups, coreSkills } from '../data/skills.js'
@@ -258,7 +257,6 @@ export default function Technical() {
         </div>
       </section>
 
-      <Contact world="tech" />
       <Footer world="tech" />
     </div>
   )
