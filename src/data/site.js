@@ -12,7 +12,7 @@ export const site = {
   // Contact form: free Web3Forms access key tied to the email above.
   // Get yours in ~30s at https://web3forms.com (enter janvibawankule3@gmail.com),
   // then paste the key here. Messages arrive as email to that address.
-  formAccessKey: 'YOUR_WEB3FORMS_ACCESS_KEY',
+  formAccessKey: '50752435-2651-4e0d-b815-5d332412e390',
   links: {
     linkedin: 'https://www.linkedin.com/in/janhavi-bawankule-784670327/',
     github: 'https://github.com/Janhavib-11',
