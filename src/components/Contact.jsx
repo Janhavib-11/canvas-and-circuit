@@ -4,10 +4,15 @@ import Reveal from './Reveal.jsx'
 import SocialLinks from './SocialLinks.jsx'
 import { site } from '../data/site.js'
 
-// Shared contact section. Form is front-end only (MVP) — wire to a service in Phase 2.
+// Shared contact section. Submits to Web3Forms → emails site.email. No backend.
+const isConfigured =
+  site.formAccessKey && site.formAccessKey !== 'YOUR_WEB3FORMS_ACCESS_KEY'
+
 export default function Contact({ world }) {
   const isArt = world === 'art'
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
   const tone = isArt
     ? {
@@ -25,9 +30,45 @@ export default function Contact({ world }) {
         ink: 'text-tech-ink',
       }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    setSent(true)
+    setError('')
+
+    const form = e.currentTarget
+    const data = new FormData(form)
+    // Honeypot: real users leave this empty; bots fill it.
+    if (data.get('botcheck')) return
+
+    if (!isConfigured) {
+      setError(
+        'The contact form isn’t connected yet. Please email ' + site.email + ' directly for now.',
+      )
+      return
+    }
+
+    data.append('access_key', site.formAccessKey)
+    data.append('subject', `New message from your portfolio — ${data.get('name') || 'visitor'}`)
+    data.append('from_name', 'Canvas & Circuit')
+
+    setSending(true)
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      })
+      const json = await res.json()
+      if (json.success) {
+        setSent(true)
+        form.reset()
+      } else {
+        setError(json.message || 'Something went wrong. Please try again or email me directly.')
+      }
+    } catch {
+      setError('Network error. Please try again or email me directly.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -76,6 +117,7 @@ export default function Contact({ world }) {
               <input
                 required
                 type="text"
+                name="name"
                 placeholder="Your name"
                 aria-label="Your name"
                 className={`rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${tone.field}`}
@@ -83,6 +125,7 @@ export default function Contact({ world }) {
               <input
                 required
                 type="email"
+                name="email"
                 placeholder="Email address"
                 aria-label="Email address"
                 className={`rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${tone.field}`}
@@ -90,15 +133,27 @@ export default function Contact({ world }) {
               <textarea
                 required
                 rows={4}
+                name="message"
                 placeholder="Tell me about it…"
                 aria-label="Message"
                 className={`resize-none rounded-xl border px-4 py-3 text-sm outline-none transition-colors ${tone.field}`}
               />
+              {/* honeypot — hidden from people, catches bots */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+              {error ? <p className="text-sm text-red-600">{error}</p> : null}
               <button
                 type="submit"
-                className={`rounded-full px-6 py-3 text-sm font-medium transition-colors ${tone.btn}`}
+                disabled={sending}
+                className={`rounded-full px-6 py-3 text-sm font-medium transition-colors disabled:opacity-60 ${tone.btn}`}
               >
-                Send message
+                {sending ? 'Sending…' : 'Send message'}
               </button>
             </form>
           )}

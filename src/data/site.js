@@ -9,6 +9,10 @@ export const site = {
   email: 'janvibawankule3@gmail.com',
   phone: '+91 80803 66358',
   resumeUrl: '/resume.pdf', // real résumé lives in /public/resume.pdf
+  // Contact form: free Web3Forms access key tied to the email above.
+  // Get yours in ~30s at https://web3forms.com (enter janvibawankule3@gmail.com),
+  // then paste the key here. Messages arrive as email to that address.
+  formAccessKey: 'YOUR_WEB3FORMS_ACCESS_KEY',
   links: {
     linkedin: 'https://www.linkedin.com/in/janhavi-bawankule-784670327/',
     github: 'https://github.com/Janhavib-11',
