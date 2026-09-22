@@ -21,40 +21,52 @@ const sections = [
   { id: 'contact', label: 'Contact' },
 ]
 
-// Floating frames that drift on scroll — the artspace-style hero.
+// Quick lookup so the hero collage pulls real pieces (image, title, year, ratio).
+const artById = Object.fromEntries(artworks.map((a) => [a.id, a]))
+
+// A scattered gallery-wall collage. Mixed sizes + a few captioned "hero" pieces
+// give the editorial, pinned-to-the-wall feel; each drifts on scroll.
 const heroFrames = [
-  { seed: 'veil', top: '12%', left: '4%', w: 150, rot: -6, depth: 60 },
-  { seed: 'stilllife', top: '52%', left: '10%', w: 120, rot: 4, depth: 120 },
-  { seed: 'ochre', top: '18%', right: '20%', w: 130, rot: 5, depth: 90 },
-  { seed: 'weather', top: '20%', right: '4%', w: 160, rot: -4, depth: 40 },
-  { seed: 'figure', top: '58%', right: '8%', w: 120, rot: 6, depth: 150 },
+  { id: 'portrait-charcoal', top: '13%', left: '3%', w: 168, rot: -5, depth: 60, caption: true },
+  { id: 'still-life-fruit', top: '56%', left: '8%', w: 132, rot: 4, depth: 120 },
+  { id: 'ceramic-set', top: '33%', left: '21%', w: 92, rot: -9, depth: 190 },
+  { id: 'landscape-2', top: '12%', right: '18%', w: 150, rot: 5, depth: 90, caption: true },
+  { id: 'type-study', top: '22%', right: '3%', w: 182, rot: -4, depth: 40, caption: true },
+  { id: 'figure-study', top: '58%', right: '7%', w: 138, rot: 7, depth: 150 },
 ]
 
 function HeroFrame({ f, progress }) {
   const reduce = useReducedMotion()
   const y = useTransform(progress, [0, 1], [0, reduce ? 0 : -f.depth])
+  const art = artById[f.id]
+  if (!art) return null
   return (
     <motion.div
-      style={{
-        y,
-        top: f.top,
-        left: f.left,
-        right: f.right,
-        width: f.w,
-        rotate: f.rot,
-      }}
-      initial={reduce ? false : { opacity: 0, scale: 0.9 }}
+      style={{ y, top: f.top, left: f.left, right: f.right, width: f.w, rotate: f.rot }}
+      initial={reduce ? false : { opacity: 0, scale: 0.92, y: 14 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute hidden overflow-hidden rounded-sm border border-art-line shadow-2xl shadow-black/50 md:block"
+      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+      className="group absolute hidden md:block"
     >
-      <img
-        src={`https://picsum.photos/seed/${f.seed}/400/520`}
-        alt=""
-        aria-hidden
-        loading="lazy"
-        className="h-full w-full object-cover"
-      />
+      {/* polaroid / matted print */}
+      <div className="overflow-hidden rounded-[2px] border-[6px] border-sand bg-sand shadow-[0_24px_55px_-24px_rgba(56,41,27,0.55)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:rotate-0">
+        <img
+          src={art.image}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="block w-full object-cover"
+          style={{ aspectRatio: `1 / ${art.ratio}` }}
+        />
+      </div>
+      {f.caption ? (
+        <div className="mt-2 flex items-baseline justify-between gap-2 px-1">
+          <span className="font-display text-[12px] italic text-art-ink">{art.title}</span>
+          <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-art-muted">
+            {art.year}
+          </span>
+        </div>
+      ) : null}
     </motion.div>
   )
 }
@@ -149,53 +161,120 @@ export default function Creative() {
       <ScrollProgress />
       <Nav world="art" sections={sections} />
 
-      {/* Hero */}
-      <section ref={heroRef} className="relative flex min-h-[92vh] items-center overflow-hidden">
+      {/* Hero — an editorial gallery-wall collage */}
+      <section ref={heroRef} className="relative flex min-h-[94vh] items-center overflow-hidden">
+        {/* warm glow + giant faint word for depth */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[48vh] w-[48vh] -translate-x-1/2 -translate-y-[56%] rounded-full bg-brand-accent/10 blur-3xl"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 select-none font-display text-[20vw] leading-none text-art-ink/[0.04] lg:block"
+        >
+          Gallery
+        </span>
+
         {heroFrames.map((f) => (
-          <HeroFrame key={f.seed} f={f} progress={scrollYProgress} />
+          <HeroFrame key={f.id} f={f} progress={scrollYProgress} />
         ))}
+
+        <span className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rotate-90 select-none label text-art-muted lg:block">
+          Selected Works — MMXXVI
+        </span>
+
         <div className="container-page relative z-10 text-center">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="label text-art-accent"
+            className="flex items-center justify-center gap-3 label text-art-accent"
           >
-            Creative World
+            <span className="h-px w-8 bg-art-accent/50" />
+            № 01 · The Creative World
+            <span className="h-px w-8 bg-art-accent/50" />
           </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-            className="mx-auto mt-5 max-w-3xl font-display text-5xl leading-[1.02] sm:text-7xl"
-          >
-            The Canvas
-          </motion.h1>
+
+          <div className="relative mt-5">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 flex items-center justify-center font-display text-6xl leading-[1] text-transparent sm:text-8xl"
+              style={{ WebkitTextStroke: '1px rgba(193,104,60,0.28)', transform: 'translateY(7px)' }}
+            >
+              The Canvas
+            </span>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9 }}
+              className="relative mx-auto max-w-3xl font-display text-6xl leading-[1] text-art-ink sm:text-8xl"
+            >
+              The Canvas
+            </motion.h1>
+          </div>
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mx-auto mt-6 max-w-md text-art-muted"
+            transition={{ delay: 0.45 }}
+            className="mt-2 font-script text-3xl text-brand-accent sm:text-4xl"
+          >
+            a living gallery
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55 }}
+            className="mx-auto mt-5 max-w-md text-art-muted"
           >
             Every piece here has a story — paintings, sketches, crafts and experiments made when
             intuition leads instead of logic.
           </motion.p>
-          <motion.a
-            href="#gallery"
-            onClick={(e) => {
-              e.preventDefault()
-              const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-              document
-                .getElementById('gallery')
-                ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
-            }}
+
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="mt-8 inline-block rounded-full bg-art-ink px-7 py-3 text-sm font-medium text-art-bg transition-transform hover:scale-[1.03]"
+            className="mt-8 flex flex-wrap items-center justify-center gap-6"
           >
-            Browse the gallery
-          </motion.a>
+            <a
+              href="#gallery"
+              onClick={(e) => {
+                e.preventDefault()
+                const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                document
+                  .getElementById('gallery')
+                  ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+              }}
+              className="rounded-full bg-art-ink px-7 py-3 text-sm font-medium text-art-bg transition-transform hover:scale-[1.03]"
+            >
+              Browse the gallery
+            </a>
+            <a
+              href="#process"
+              onClick={(e) => {
+                e.preventDefault()
+                const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                document
+                  .getElementById('process')
+                  ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+              }}
+              className="border-b border-art-ink/40 pb-1 text-sm text-art-ink transition-colors hover:border-brand-accent hover:text-brand-accent"
+            >
+              The process →
+            </a>
+          </motion.div>
+        </div>
+
+        {/* mediums index along the bottom */}
+        <div className="absolute inset-x-0 bottom-6 z-10 hidden items-center justify-center gap-4 label text-art-muted md:flex">
+          {['Paintings', 'Sketches', 'Crafts', 'Graphic Design', 'Digital'].map((m, i) => (
+            <span key={m} className="flex items-center gap-4">
+              {i > 0 && <span className="text-art-accent/60">✦</span>}
+              {m}
+            </span>
+          ))}
         </div>
       </section>
 
