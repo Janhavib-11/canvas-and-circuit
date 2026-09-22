@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { site } from '../data/site.js'
+import SocialLinks from './SocialLinks.jsx'
 
 export default function Footer({ world }) {
   const isArt = world === 'art'
@@ -17,12 +18,7 @@ export default function Footer({ world }) {
           </Link>
           <p className={`mt-1 text-sm ${tone.muted}`}>{site.concept}</p>
         </div>
-        <div className={`flex flex-wrap gap-x-6 gap-y-2 label ${tone.muted}`}>
-          <a href={site.links.linkedin} target="_blank" rel="noreferrer" className="hover:opacity-70">LinkedIn</a>
-          <a href={site.links.github} target="_blank" rel="noreferrer" className="hover:opacity-70">GitHub</a>
-          <a href={site.links.behance} target="_blank" rel="noreferrer" className="hover:opacity-70">Behance</a>
-          <a href={`mailto:${site.email}`} className="hover:opacity-70">Email</a>
-        </div>
+        <SocialLinks world={world} />
       </div>
       <div className={`container-page border-t ${tone.border} py-5`}>
         <p className={`text-xs ${tone.muted}`}>

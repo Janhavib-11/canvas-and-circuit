@@ -1,28 +1,42 @@
-// Internships / experience — rendered as a timeline.
+// Industrial internships / experience (from résumé) — rendered as a timeline.
 export const experience = [
   {
-    org: 'BSNL',
-    role: 'Telecom Engineering Intern',
-    period: 'Jun 2025 – Jul 2025',
-    departments: ['Transmission', 'Broadband / FTTH', 'Switching'],
+    org: 'MRSAC, Nagpur',
+    role: 'Industrial Intern — GIS & Remote Sensing',
+    period: 'Jun 2026 – Jul 2026 · 1 month',
+    departments: ['GIS', 'Remote Sensing', 'Geospatial'],
     summary:
-      'Shadowed field and exchange teams across transmission and broadband. Studied OFC networks, fault localisation, and last-mile FTTH provisioning.',
+      'One-month internship at the Maharashtra Remote Sensing Applications Centre in GIS, remote sensing and geospatial technologies — hands-on with spatial data analysis and digital mapping.',
     learnings: [
-      'End-to-end path of a customer broadband connection',
-      'Optical fibre splicing & OTDR fault reading',
-      'How large telecom exchanges stay resilient',
+      'Worked with satellite imagery and geospatial datasets',
+      'Supported infrastructure planning & environmental monitoring',
+      'Smart-city geospatial use cases',
     ],
   },
   {
-    org: 'College Innovation Cell',
-    role: 'Student Project Associate',
-    period: '2024 – Present',
-    departments: ['Prototyping', 'Mentoring'],
+    org: 'BSNL',
+    role: 'Industrial Intern — Telecom Networking',
+    period: 'May 2025 – Jun 2025',
+    departments: ['NIB', 'FTTH', 'Routing & Networking', 'Sales'],
     summary:
-      'Helped junior teams take embedded ideas from breadboard to demo, and ran two intro-to-hardware workshops.',
+      'Industrial training across National Internet Backbone (NIB), Fiber-to-the-Home (FTTH), routing & networking and sales & marketing.',
     learnings: [
-      'Rapid prototyping under deadlines',
-      'Explaining hardware clearly to beginners',
+      'Optical fibre communication & broadband technologies',
+      'Router configuration and network architecture',
+      'End-to-end path of a customer connection',
+    ],
+  },
+  {
+    org: 'Subros Limited, Pune',
+    role: 'Diploma Engineer Trainee (DET)',
+    period: 'Jan 2024 – May 2024 · 6 months',
+    departments: ['Quality Control', 'HVAC Assembly', 'Production'],
+    summary:
+      'Six-month training in automotive air-conditioning manufacturing across quality control, HVAC assembly, condenser and production operations.',
+    learnings: [
+      'Quality inspections & component validation to standards',
+      'Process optimization in high-volume manufacturing',
+      'Cross-functional team collaboration',
     ],
   },
 ]

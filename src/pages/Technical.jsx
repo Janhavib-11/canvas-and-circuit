@@ -7,16 +7,17 @@ import LazyImage from '../components/LazyImage.jsx'
 import Contact from '../components/Contact.jsx'
 import { useSEO } from '../hooks/useSEO.js'
 import { site } from '../data/site.js'
-import { skillGroups } from '../data/skills.js'
+import { skillGroups, coreSkills } from '../data/skills.js'
 import { projects } from '../data/projects.js'
 import { experience } from '../data/experience.js'
-import { certifications, achievements } from '../data/certifications.js'
+import { certifications, achievements, education } from '../data/certifications.js'
 
 const sections = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
   { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' },
   { id: 'credentials', label: 'Credentials' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -102,8 +103,13 @@ export default function Technical() {
             Electronics &amp; Telecommunication — where I turn constraints into working systems.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <a href={site.resumeUrl} className="rounded-full bg-tech-accent px-6 py-3 text-sm font-medium text-white transition-transform hover:scale-[1.03]">
-              Download résumé
+            <a
+              href={site.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full bg-tech-accent px-6 py-3 text-sm font-medium text-white transition-transform hover:scale-[1.03]"
+            >
+              View résumé
             </a>
             <a href="#projects" className="rounded-full border border-tech-line bg-white px-6 py-3 text-sm text-tech-ink transition-colors hover:border-tech-accent">
               See projects
@@ -150,6 +156,19 @@ export default function Technical() {
             </Reveal>
           ))}
         </div>
+        <Reveal className="mt-10">
+          <p className="label mb-4 text-tech-muted">Core strengths</p>
+          <div className="flex flex-wrap gap-2">
+            {coreSkills.map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-tech-line bg-white px-3 py-1.5 text-sm text-tech-ink"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       {/* Projects */}
@@ -180,6 +199,28 @@ export default function Technical() {
                     <span key={d} className="rounded-full border border-tech-line px-2.5 py-1 font-mono text-[11px] text-tech-muted">{d}</span>
                   ))}
                 </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Education */}
+      <section id="education" className="container-page py-20">
+        <SectionHeading world="tech" eyebrow="Education" title="Academics" />
+        <div className="mt-10 divide-y divide-tech-line border-y border-tech-line">
+          {education.map((ed) => (
+            <Reveal
+              key={ed.degree}
+              className="grid gap-1 py-5 sm:grid-cols-[1fr,auto] sm:items-baseline sm:gap-6"
+            >
+              <div>
+                <p className="text-tech-ink">{ed.degree}</p>
+                <p className="text-sm text-tech-muted">{ed.place}</p>
+              </div>
+              <div className="flex items-baseline gap-4 sm:justify-end">
+                <span className="text-sm text-tech-ink">{ed.detail}</span>
+                <span className="font-mono text-xs text-tech-accent">{ed.period}</span>
               </div>
             </Reveal>
           ))}

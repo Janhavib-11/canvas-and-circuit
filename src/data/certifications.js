@@ -1,27 +1,52 @@
-// Certifications & achievements.
+// Certifications, achievements & education (from résumé).
 export const certifications = [
-  { name: 'Signals & Systems', issuer: 'NPTEL', year: '2025', link: '#' },
-  { name: 'MATLAB Onramp', issuer: 'MathWorks', year: '2024', link: '#' },
-  { name: 'Capture The Flag — Finalist', issuer: 'InterCollege CTF', year: '2025', link: '#' },
-  { name: 'Python for Everybody', issuer: 'Coursera', year: '2024', link: '#' },
-  { name: 'IoT Fundamentals', issuer: 'Cisco NetAcad', year: '2025', link: '#' },
+  { name: 'NPTEL — 5 Courses', issuer: 'NPTEL', year: '', link: '#' },
+  { name: 'Crest CTF 2026', issuer: 'Crest', year: '2026', link: '#' },
+  { name: 'MATLAB Onramp', issuer: 'MathWorks', year: '', link: '#' },
+  { name: 'VLSI', issuer: 'Microchip EduSkills', year: '', link: '#' },
+  { name: 'Infosys Springboard', issuer: 'Infosys', year: '', link: '#' },
+  { name: 'Inter-College Hackathon', issuer: 'Hackathon', year: '', link: '#' },
+  { name: 'Young Professional Course', issuer: 'TCS-iON', year: '', link: '#' },
 ]
 
 export const achievements = [
   {
-    title: 'Technical Fest Coordinator',
-    detail: 'Led a 12-person team to run the department’s annual technical festival.',
+    title: 'IEEE-Format Research Paper',
+    detail:
+      'Authored a paper on AI-powered EV smart infrastructure integrating AI, GIS, IoT and Cloud Computing.',
   },
   {
-    title: 'Student Ambassador',
-    detail: 'Represented the college for an industry outreach programme.',
+    title: 'Google & Gemini Student Ambassador',
+    detail: 'Qualified for Round 1 of the Google and Gemini Student Ambassador Programs (2026).',
   },
   {
-    title: 'Project Competition — 2nd Place',
-    detail: 'Smart Energy Meter placed second at an inter-college project expo.',
+    title: 'CDC Coordinator',
+    detail:
+      'Career Development Cell coordinator — led placement activities, debates and student competitions.',
   },
   {
-    title: 'Art Club — Design Lead',
-    detail: 'Designed posters and identity for campus events across two years.',
+    title: 'Core Organizer, Festronix',
+    detail: 'Planned and ran technical events including LogicQuest, coordinating teams end to end.',
+  },
+]
+
+export const education = [
+  {
+    degree: 'B.Tech (Honours), Electronics & Telecommunication Engineering',
+    place: 'St. Vincent Pallotti College of Engineering & Technology, Nagpur',
+    period: 'In progress',
+    detail: '7 SGPA through 6th semester',
+  },
+  {
+    degree: 'Diploma, Electronics & Telecommunication Engineering',
+    place: 'Government Polytechnic, Nagpur',
+    period: '2024',
+    detail: '79.15%',
+  },
+  {
+    degree: 'Class X',
+    place: 'New English High School, Congress Nagar, Nagpur',
+    period: '2021',
+    detail: '86.20%',
   },
 ]

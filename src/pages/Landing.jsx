@@ -208,6 +208,8 @@ export default function Landing() {
             </Link>
             <a
               href={site.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
               className="border-b border-art-ink/40 pb-1 text-sm uppercase tracking-[0.14em] text-art-ink transition-colors hover:border-brand-accent hover:text-brand-accent"
             >
               View résumé
@@ -228,27 +230,21 @@ export default function Landing() {
               ['Creative World', '/creative'],
               ['Résumé', site.resumeUrl],
               ['Contact', '/technical#contact'],
-            ].map(([label, to], i) =>
-              to.startsWith('/') ? (
-                <Link
-                  key={label}
-                  to={to}
-                  className={`px-3 py-4 text-center label text-art-ink transition-colors hover:text-brand-accent ${
-                    i >= 2 ? 'hidden sm:block' : ''
-                  }`}
-                >
-                  {label}
-                </Link>
-              ) : (
-                <a
-                  key={label}
-                  href={to}
-                  className="hidden px-3 py-4 text-center label text-art-ink transition-colors hover:text-brand-accent sm:block"
-                >
+            ].map(([label, to], i) => {
+              const cls = `px-3 py-4 text-center label text-art-ink transition-colors hover:text-brand-accent ${
+                i >= 2 ? 'hidden sm:block' : ''
+              }`
+              // The résumé is a real file — open it, don't route to it.
+              return to.endsWith('.pdf') ? (
+                <a key={label} href={to} target="_blank" rel="noreferrer" className={cls}>
                   {label}
                 </a>
-              ),
-            )}
+              ) : (
+                <Link key={label} to={to} className={cls}>
+                  {label}
+                </Link>
+              )
+            })}
           </div>
         </motion.nav>
       </section>

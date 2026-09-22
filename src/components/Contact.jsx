@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import SectionHeading from './SectionHeading.jsx'
 import Reveal from './Reveal.jsx'
+import SocialLinks from './SocialLinks.jsx'
 import { site } from '../data/site.js'
 
 // Shared contact section. Form is front-end only (MVP) — wire to a service in Phase 2.
@@ -42,8 +43,10 @@ export default function Contact({ world }) {
         <Reveal className="grid gap-4">
           {[
             { label: 'Email', value: site.email, href: `mailto:${site.email}` },
+            { label: 'Phone', value: site.phone, href: `tel:${site.phone.replace(/\s/g, '')}` },
             { label: 'LinkedIn', value: 'in/janhavi-bawankule', href: site.links.linkedin },
-            { label: 'GitHub', value: 'github.com/janhavi-bawankule', href: site.links.github },
+            { label: 'GitHub', value: 'github.com/Janhavib-11', href: site.links.github },
+            { label: 'Pinterest', value: 'Janhavi’s boards', href: site.links.pinterest },
             { label: 'Location', value: site.location, href: null },
           ].map((row) => (
             <div key={row.label} className={`flex items-baseline justify-between border-b ${tone.card} pb-3`}>
@@ -57,6 +60,7 @@ export default function Contact({ world }) {
               )}
             </div>
           ))}
+          <SocialLinks world={world} className="pt-2" />
         </Reveal>
 
         <Reveal delay={0.1}>
