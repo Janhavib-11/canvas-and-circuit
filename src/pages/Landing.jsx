@@ -209,7 +209,7 @@ export default function Landing() {
 
         {/* vertical edition label, right edge */}
         <span className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rotate-90 select-none label text-art-muted lg:block">
-          Canvas &amp; Circuit — Vol. 01 · 2026
+          Canvas &amp; Circuit — Nagpur, India
         </span>
 
         {/* content */}
@@ -222,9 +222,9 @@ export default function Landing() {
           >
             <span className="h-8 w-px bg-brand-accent" />
             <span className="label leading-tight text-art-ink">
-              Portfolio — Vol. 01
+              Electronics &amp; Telecommunication Engineer
               <br />
-              Electronics &amp; Telecom · Visual Art
+              Artist &amp; Designer · Nagpur, India
             </span>
           </motion.div>
 
