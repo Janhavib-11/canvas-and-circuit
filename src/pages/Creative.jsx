@@ -178,6 +178,13 @@ export default function Creative() {
           </motion.p>
           <motion.a
             href="#gallery"
+            onClick={(e) => {
+              e.preventDefault()
+              const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+              document
+                .getElementById('gallery')
+                ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}

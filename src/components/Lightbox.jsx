@@ -4,18 +4,21 @@ import { motion, AnimatePresence } from 'framer-motion'
 // Full-screen artwork viewer with metadata. Keyboard: Esc closes, ←/→ navigate.
 export default function Lightbox({ item, onClose, onPrev, onNext }) {
   useEffect(() => {
+    // Only trap scroll / listen for keys while an image is actually open.
+    if (!item) return
     const onKey = (e) => {
       if (e.key === 'Escape') onClose()
       if (e.key === 'ArrowLeft') onPrev()
       if (e.key === 'ArrowRight') onNext()
     }
     document.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
+      document.body.style.overflow = prevOverflow
     }
-  }, [onClose, onPrev, onNext])
+  }, [item, onClose, onPrev, onNext])
 
   return (
     <AnimatePresence>
