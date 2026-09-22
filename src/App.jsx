@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Landing from './pages/Landing.jsx'
 import Technical from './pages/Technical.jsx'
 import Creative from './pages/Creative.jsx'
+import Cursor from './components/Cursor.jsx'
 
 // Reset scroll on every route change.
 function ScrollToTop() {
@@ -16,6 +17,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <>
+      <Cursor />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />

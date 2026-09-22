@@ -6,7 +6,7 @@ export default {
       colors: {
         // Shared brand
         brand: {
-          accent: '#C0653B', // burnt sienna — the bridge color between both worlds
+          accent: '#C1683C', // terracotta — the bridge color between both worlds
         },
         // Technical World — light, structured
         tech: {
@@ -17,20 +17,28 @@ export default {
           muted: '#5B6472',
           accent: '#2F6DF6', // controlled blue
         },
-        // Creative World — dark, editorial
+        // Creative World — warm, earthy, editorial (terracotta / olive / cream)
         art: {
-          bg: '#0B0A08',
-          surface: '#161311',
-          line: '#2A2521',
-          ink: '#F3EDE4',
-          muted: '#9A8F82',
-          accent: '#C0653B',
+          bg: '#F4EDE2', // cream
+          surface: '#FBF6EE', // lighter cream card
+          line: '#E5D8C5', // sand border
+          ink: '#38291B', // espresso
+          muted: '#8C7B67', // taupe
+          accent: '#C1683C', // terracotta
         },
+        olive: {
+          DEFAULT: '#4B4A2F',
+          muted: '#6A6A45',
+          soft: '#7C7B54',
+        },
+        clay: '#B7794F',
+        sand: '#EFE6D8',
       },
       fontFamily: {
         display: ['"Fraunces"', 'Georgia', 'serif'],
         sans: ['"Inter"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        script: ['"Caveat"', 'cursive'],
       },
       letterSpacing: {
         label: '0.22em',

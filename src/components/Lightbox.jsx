@@ -33,21 +33,21 @@ export default function Lightbox({ item, onClose, onPrev, onNext }) {
           <button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-art-line text-art-ink hover:bg-art-surface"
+            className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10"
           >
             ✕
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); onPrev() }}
             aria-label="Previous"
-            className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-art-line text-art-ink hover:bg-art-surface sm:left-6"
+            className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10 sm:left-6"
           >
             ←
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); onNext() }}
             aria-label="Next"
-            className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-art-line text-art-ink hover:bg-art-surface sm:right-6"
+            className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10 sm:right-6"
           >
             →
           </button>
@@ -66,13 +66,13 @@ export default function Lightbox({ item, onClose, onPrev, onNext }) {
               className="max-h-[70vh] w-full rounded-lg object-contain sm:max-h-[82vh] sm:flex-1"
             />
             <figcaption className="sm:w-64 sm:shrink-0">
-              <p className="label text-art-accent">{item.category}</p>
-              <h3 className="mt-2 font-display text-2xl text-art-ink">{item.title}</h3>
-              <p className="mt-1 text-sm text-art-muted">
+              <p className="label text-brand-accent">{item.category}</p>
+              <h3 className="mt-2 font-display text-2xl text-white">{item.title}</h3>
+              <p className="mt-1 text-sm text-white/60">
                 {item.medium} · {item.year}
               </p>
               {item.story && (
-                <p className="mt-4 border-t border-art-line pt-4 text-sm leading-relaxed text-art-muted">
+                <p className="mt-4 border-t border-white/15 pt-4 text-sm leading-relaxed text-white/70">
                   {item.story}
                 </p>
               )}
