@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import CircuitBrush from '../components/CircuitBrush.jsx'
 import Marquee from '../components/Marquee.jsx'
 import Sprig from '../components/Sprig.jsx'
+import CharacterSwitcherCard from '../components/ui/character-switcher.jsx'
 import { site } from '../data/site.js'
 import { useSEO } from '../hooks/useSEO.js'
 
@@ -297,21 +298,34 @@ export default function Landing() {
       <section className="relative flex min-h-screen snap-start flex-col justify-center overflow-hidden py-24">
         <Sprig className="pointer-events-none absolute right-8 top-16 w-28 text-olive/50 rotate-[200deg]" />
         <div className="container-page">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={vp}
-            transition={{ duration: 0.7 }}
-            className="mb-10 max-w-xl"
-          >
-            <p className="label text-clay">— Two worlds —</p>
-            <h2 className="mt-3 font-display text-3xl text-art-ink sm:text-5xl">
-              Pick where to begin.
-            </h2>
-            <p className="mt-3 text-art-muted">
-              Same person, two visual languages. Jump between them anytime.
-            </p>
-          </motion.div>
+          <div className="mb-12 grid items-center gap-10 lg:grid-cols-2">
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.7 }}
+              className="max-w-xl"
+            >
+              <p className="label text-clay">— Two worlds —</p>
+              <h2 className="mt-3 font-display text-3xl text-art-ink sm:text-5xl">
+                Pick where to begin.
+              </h2>
+              <p className="mt-3 text-art-muted">
+                Same person, two visual languages — and a few more sides besides. Tap the card to
+                meet them, then jump into a world below.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.8, delay: 0.1, ease }}
+              className="flex justify-center lg:justify-end"
+            >
+              <CharacterSwitcherCard autoPlay />
+            </motion.div>
+          </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
             <motion.div
