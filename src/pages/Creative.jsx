@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react'
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -55,12 +55,69 @@ function HeroFrame({ f, progress }) {
   )
 }
 
+// Thin scroll-progress bar (scroll-linked), smoothed with a spring.
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 })
+  return (
+    <motion.div
+      style={{ scaleX }}
+      className="fixed left-0 top-0 z-[70] h-[3px] w-full origin-left bg-brand-accent"
+      aria-hidden
+    />
+  )
+}
+
+// One gallery tile: parallax drift (scroll-linked) + a one-by-one reveal on enter.
+function GalleryItem({ a, index, onOpen }) {
+  const reduce = useReducedMotion()
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+  // Vary the parallax magnitude per column so the grid gains depth.
+  const mag = [64, 26, 46][index % 3]
+  const yRaw = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [mag, -mag])
+  const y = useSpring(yRaw, { stiffness: 90, damping: 24, mass: 0.4 })
+
+  return (
+    <div ref={ref} className="mb-5 break-inside-avoid">
+      <motion.div style={{ y }} className="will-change-transform">
+        <motion.button
+          onClick={() => onOpen(a.id)}
+          initial={reduce ? false : { opacity: 0, y: 60, scale: 0.94 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: (index % 3) * 0.12 }}
+          className="group relative block w-full overflow-hidden rounded-sm border border-art-line text-left"
+        >
+          <LazyImage
+            src={a.image}
+            alt={a.title}
+            ratio={a.ratio}
+            imgClassName="transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="p-4">
+              <p className="font-display text-lg text-white">{a.title}</p>
+              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/70">
+                {a.medium} · {a.year}
+              </p>
+            </div>
+          </div>
+        </motion.button>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function Creative() {
   useSEO({
     title: 'Creative World — Janhavi Bawankule | Art & Design Gallery',
     description:
       'A curated gallery of paintings, sketches, crafts, graphic design and digital experiments by Janhavi Bawankule.',
-    themeColor: '#0B0A08',
+    themeColor: '#F4EDE2',
   })
 
   const heroRef = useRef(null)
@@ -85,6 +142,7 @@ export default function Creative() {
   return (
     <div className="relative min-h-screen bg-art-bg text-art-ink">
       <div className="grain-overlay" />
+      <ScrollProgress />
       <Nav world="art" sections={sections} />
 
       {/* Hero */}
@@ -151,30 +209,10 @@ export default function Creative() {
           ))}
         </div>
 
-        {/* Masonry via CSS columns */}
+        {/* Masonry via CSS columns — each tile parallaxes + reveals one by one */}
         <div className="mt-10 [column-fill:_balance] gap-5 sm:columns-2 lg:columns-3">
-          {filtered.map((a) => (
-            <Reveal key={a.id} className="mb-5 break-inside-avoid">
-              <button
-                onClick={() => openAt(a.id)}
-                className="group relative block w-full overflow-hidden rounded-sm border border-art-line text-left"
-              >
-                <LazyImage
-                  src={a.image}
-                  alt={a.title}
-                  ratio={a.ratio}
-                  imgClassName="transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <div className="p-4">
-                    <p className="font-display text-lg text-white">{a.title}</p>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/70">
-                      {a.medium} · {a.year}
-                    </p>
-                  </div>
-                </div>
-              </button>
-            </Reveal>
+          {filtered.map((a, i) => (
+            <GalleryItem key={a.id} a={a} index={i} onOpen={openAt} />
           ))}
         </div>
       </section>
