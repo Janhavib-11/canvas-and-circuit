@@ -120,23 +120,25 @@ export default function Landing() {
         ref={heroRef}
         className="relative min-h-screen snap-start overflow-hidden bg-art-bg"
       >
-        {/* full-bleed portrait background */}
+        {/* portrait — anchored right at a portrait-friendly width so the full
+            upper body reads instead of a hard face crop; blends into the cream */}
         <motion.div
           style={{ y: portraitY }}
-          initial={reduce ? false : { scale: 1.06, opacity: 0 }}
+          initial={reduce ? false : { scale: 1.03, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.4, ease }}
-          className="absolute inset-0"
+          className="absolute inset-y-0 right-0 w-full lg:w-[52%]"
         >
           <img
             src="/images/portrait.webp"
             alt="Janhavi Bawankule"
-            className="h-full w-full object-cover object-[70%_20%]"
+            className="h-full w-full object-cover object-[center_top]"
             style={{ filter: 'sepia(0.14) contrast(1.03) brightness(1.02) saturate(0.92)' }}
           />
-          {/* editorial legibility scrims */}
-          <div className="absolute inset-0 bg-gradient-to-r from-art-bg via-art-bg/85 to-transparent lg:via-art-bg/55" />
-          <div className="absolute inset-0 bg-gradient-to-t from-art-bg via-transparent to-art-bg/40" />
+          {/* blend the photo's left edge into the cream */}
+          <div className="absolute inset-0 bg-gradient-to-r from-art-bg via-art-bg/40 to-transparent lg:via-art-bg/15" />
+          {/* soft top / bottom fades */}
+          <div className="absolute inset-0 bg-gradient-to-t from-art-bg via-transparent to-transparent" />
           <div className="absolute inset-0 mix-blend-multiply bg-brand-accent/5" />
         </motion.div>
 
