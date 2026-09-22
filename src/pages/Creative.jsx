@@ -7,9 +7,13 @@ import SectionHeading from '../components/SectionHeading.jsx'
 import LazyImage from '../components/LazyImage.jsx'
 import Lightbox from '../components/Lightbox.jsx'
 import Contact from '../components/Contact.jsx'
+import WorksWheel from '../components/ui/works-wheel.jsx'
 import { useSEO } from '../hooks/useSEO.js'
 import { site } from '../data/site.js'
 import { artworks, categories } from '../data/artworks.js'
+
+// Feed the wheel with the same artworks (browse-only — the grid below handles opening).
+const wheelItems = artworks.map((a) => ({ title: a.title, image: a.image }))
 
 const sections = [
   { id: 'gallery', label: 'Gallery' },
@@ -192,6 +196,21 @@ export default function Creative() {
           >
             Browse the gallery
           </motion.a>
+        </div>
+      </section>
+
+      {/* Selected works — the turnable wheel */}
+      <section className="relative">
+        <div className="container-page pt-24 pb-4">
+          <SectionHeading
+            world="art"
+            eyebrow="Selected works"
+            title="Turn the wheel"
+            intro="Scroll or drag to spin through the collection — the full grid is just below."
+          />
+        </div>
+        <div className="h-[82vh] w-full">
+          <WorksWheel items={wheelItems} label="Works '26" action="View" />
         </div>
       </section>
 
