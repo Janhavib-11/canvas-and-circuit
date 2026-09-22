@@ -114,161 +114,140 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* ===================== PANEL 1 — warm editorial hero ===================== */}
+      {/* ===================== PANEL 1 — ZARA-style full-bleed editorial hero ===================== */}
       <section
         ref={heroRef}
-        className="relative flex min-h-screen snap-start items-center overflow-hidden"
+        className="relative min-h-screen snap-start overflow-hidden bg-art-bg"
       >
-        {/* organic terracotta blob top-right */}
-        <div
-          className="pointer-events-none absolute -right-24 -top-24 h-[34rem] w-[34rem] bg-brand-accent/90"
-          style={{ borderRadius: '46% 54% 42% 58% / 55% 45% 55% 45%' }}
-        />
-        <div
-          className="pointer-events-none absolute right-40 top-10 h-40 w-40 rounded-full bg-sand"
-          style={{ mixBlendMode: 'multiply' }}
-        />
-        <Sprig className="pointer-events-none absolute left-6 top-28 w-28 text-olive/70 -rotate-12" />
-        <Sprig className="pointer-events-none absolute bottom-28 right-10 hidden w-24 text-olive/60 rotate-[160deg] lg:block" />
+        {/* full-bleed portrait background */}
+        <motion.div
+          style={{ y: portraitY }}
+          initial={reduce ? false : { scale: 1.06, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.4, ease }}
+          className="absolute inset-0"
+        >
+          <img
+            src="/images/portrait.webp"
+            alt="Janhavi Bawankule"
+            className="h-full w-full object-cover object-[70%_20%]"
+            style={{ filter: 'sepia(0.14) contrast(1.03) brightness(1.02) saturate(0.92)' }}
+          />
+          {/* editorial legibility scrims */}
+          <div className="absolute inset-0 bg-gradient-to-r from-art-bg via-art-bg/85 to-transparent lg:via-art-bg/55" />
+          <div className="absolute inset-0 bg-gradient-to-t from-art-bg via-transparent to-art-bg/40" />
+          <div className="absolute inset-0 mix-blend-multiply bg-brand-accent/5" />
+        </motion.div>
 
-        <div className="container-page relative grid w-full items-center gap-8 py-24 lg:grid-cols-12 lg:py-16">
-          {/* left — type block */}
-          <div className="relative z-20 lg:col-span-7">
-            <motion.p
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="label text-clay"
-            >
-              Engineer · Artist — Portfolio Vol. 01
-            </motion.p>
+        {/* giant faint monogram, far right */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-6 top-1/2 hidden -translate-y-1/2 select-none font-display text-[22rem] leading-none text-art-ink/5 lg:block"
+        >
+          J
+        </span>
 
-            <motion.h1
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.1 }}
-              className="mt-4 font-display font-semibold uppercase leading-[0.82] tracking-tight text-brand-accent"
-            >
-              <span className="block text-6xl sm:text-8xl lg:text-[8.5rem]">Janhavi</span>
-            </motion.h1>
-            <motion.p
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="mt-1 font-display text-2xl uppercase tracking-[0.5em] text-olive sm:text-3xl"
-            >
-              Portfolio
-            </motion.p>
+        {/* vertical edition label, right edge */}
+        <span className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rotate-90 select-none label text-art-muted lg:block">
+          Canvas &amp; Circuit — Vol. 01 · 2026
+        </span>
 
-            <motion.p
-              initial={reduce ? false : { opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.3 }}
-              className="mt-6 font-script text-4xl leading-[1.05] text-art-ink sm:text-5xl"
-            >
-              Building with circuits,
+        {/* content */}
+        <div className="container-page relative z-10 flex min-h-screen flex-col justify-center pb-24 pt-24">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="flex items-center gap-3"
+          >
+            <span className="h-8 w-px bg-brand-accent" />
+            <span className="label leading-tight text-art-ink">
+              Portfolio — Vol. 01
               <br />
-              creating with colour
-            </motion.p>
+              Electronics &amp; Telecom · Visual Art
+            </span>
+          </motion.div>
 
-            <motion.p
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.4 }}
-              className="mt-5 max-w-md text-base leading-relaxed text-art-muted"
+          <motion.h1
+            initial={reduce ? false : { opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.1, ease }}
+            className="mt-6 font-display leading-[0.82] tracking-tight text-art-ink"
+          >
+            <span className="block text-[4.2rem] font-medium sm:text-8xl lg:text-[9rem]">
+              Janhavi
+            </span>
+            <span className="mt-2 block text-2xl uppercase tracking-[0.42em] text-brand-accent sm:text-3xl">
+              Bawankule
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.28 }}
+            className="mt-7 max-w-md font-display text-xl italic text-art-ink/90 sm:text-2xl"
+          >
+            Engineer by discipline. Creator by passion.
+          </motion.p>
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.4 }}
+            className="mt-9 flex flex-wrap items-center gap-6"
+          >
+            <Link
+              to="/technical"
+              className="inline-flex items-center gap-2 rounded-none bg-art-ink px-8 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-art-bg transition-colors hover:bg-brand-accent"
             >
-              Electronics &amp; Telecommunication engineer and visual artist — {site.tagline}
-            </motion.p>
-
-            <motion.div
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.5 }}
-              className="mt-8 flex flex-wrap items-center gap-4"
+              Explore my work <span aria-hidden>→</span>
+            </Link>
+            <a
+              href={site.resumeUrl}
+              className="border-b border-art-ink/40 pb-1 text-sm uppercase tracking-[0.14em] text-art-ink transition-colors hover:border-brand-accent hover:text-brand-accent"
             >
-              <Link
-                to="/technical"
-                className="rounded-full bg-olive px-6 py-3 text-sm font-medium text-sand transition-transform hover:scale-[1.03]"
-              >
-                Explore my work
-              </Link>
-              <a
-                href={site.resumeUrl}
-                className="rounded-full border border-art-ink/30 px-6 py-3 text-sm text-art-ink transition-colors hover:border-brand-accent hover:text-brand-accent"
-              >
-                View résumé
-              </a>
-            </motion.div>
-
-            <div className="mt-10 hidden sm:block">
-              <ScrollCue />
-            </div>
-          </div>
-
-          {/* right — portrait in an arch, MARÍA style */}
-          <div className="relative lg:col-span-5">
-            <motion.figure
-              style={{ y: portraitY }}
-              initial={reduce ? false : { opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease, delay: 0.15 }}
-              className="relative z-10 mx-auto w-[72%] max-w-xs sm:max-w-sm lg:w-[92%]"
-            >
-              <div
-                className="relative overflow-hidden border-[6px] border-sand shadow-2xl shadow-clay/30"
-                style={{ borderRadius: '48% 48% 46% 46% / 16% 16% 8% 8%' }}
-              >
-                <img
-                  src="/images/portrait.webp"
-                  alt="Janhavi Bawankule"
-                  className="aspect-[3/4] w-full object-cover"
-                />
-                <div className="pointer-events-none absolute inset-0 mix-blend-soft-light bg-brand-accent/20" />
-              </div>
-
-              {/* rotating seal badge */}
-              <motion.div
-                animate={reduce ? {} : { rotate: 360 }}
-                transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
-                className="absolute -left-6 bottom-6 h-28 w-28 sm:-left-10"
-              >
-                <svg viewBox="0 0 100 100" className="h-full w-full">
-                  <defs>
-                    <path id="seal" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0" />
-                  </defs>
-                  <text className="fill-olive font-mono text-[9px] uppercase tracking-[0.18em]">
-                    <textPath href="#seal">
-                      · Engineer · Artist · Maker · Creator ·
-                    </textPath>
-                  </text>
-                </svg>
-                <span className="absolute inset-0 grid place-items-center text-brand-accent">✦</span>
-              </motion.div>
-            </motion.figure>
-          </div>
+              View résumé
+            </a>
+          </motion.div>
         </div>
 
-        {/* wavy divider + ribbon at the bottom */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" className="h-16 w-full text-olive">
-            <path
-              d="M0,50 C240,10 480,80 720,50 C960,20 1200,80 1440,40 L1440,90 L0,90 Z"
-              fill="currentColor"
-            />
-          </svg>
-          <div className="bg-olive">
-            <Marquee
-              duration={30}
-              itemClassName="font-display text-sm uppercase tracking-[0.18em] text-sand"
-              items={[
-                'Canvas & Circuit',
-                'Engineer by discipline',
-                'Creator by passion',
-                'Where engineering meets imagination',
-              ]}
-            />
+        {/* thin editorial nav strip, ZARA style */}
+        <motion.nav
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9, delay: 0.6 }}
+          className="absolute inset-x-0 bottom-0 z-10 border-t border-art-ink/15 bg-art-bg/40 backdrop-blur-sm"
+        >
+          <div className="container-page grid grid-cols-2 divide-x divide-art-ink/10 sm:grid-cols-4">
+            {[
+              ['Technical World', '/technical'],
+              ['Creative World', '/creative'],
+              ['Résumé', site.resumeUrl],
+              ['Contact', '/technical#contact'],
+            ].map(([label, to], i) =>
+              to.startsWith('/') ? (
+                <Link
+                  key={label}
+                  to={to}
+                  className={`px-3 py-4 text-center label text-art-ink transition-colors hover:text-brand-accent ${
+                    i >= 2 ? 'hidden sm:block' : ''
+                  }`}
+                >
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  key={label}
+                  href={to}
+                  className="hidden px-3 py-4 text-center label text-art-ink transition-colors hover:text-brand-accent sm:block"
+                >
+                  {label}
+                </a>
+              ),
+            )}
           </div>
-        </div>
+        </motion.nav>
       </section>
 
       {/* ===================== PANEL 2 — statement + bridge ===================== */}
