@@ -216,6 +216,32 @@ export default function Landing() {
               View résumé
             </a>
           </motion.div>
+
+          {/* social profile logos under the buttons */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.55 }}
+            className="mt-7 flex items-center gap-3"
+          >
+            {[
+              { name: 'github', label: 'GitHub', href: site.links.github },
+              { name: 'linkedin', label: 'LinkedIn', href: site.links.linkedin },
+              { name: 'pinterest', label: 'Pinterest', href: site.links.pinterest },
+            ].map((s) => (
+              <a
+                key={s.name}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={s.label}
+                title={s.label}
+                className="grid h-10 w-10 place-items-center rounded-full border border-art-ink/20 text-art-ink/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-accent hover:bg-brand-accent hover:text-white"
+              >
+                <Icon name={s.name} className="h-[18px] w-[18px]" />
+              </a>
+            ))}
+          </motion.div>
         </div>
 
         {/* thin editorial nav strip, ZARA style */}
