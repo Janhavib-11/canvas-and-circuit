@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 
-// A custom cursor: an instant dot + a lagging ring that grows over interactive targets.
+// Liquid cursor: a crisp dot leads, and two soft, transparent blurred blobs
+// trail behind it with different spring lags — a gooey, liquid wake.
 // Auto-disabled on touch devices and when the user prefers reduced motion.
 export default function Cursor() {
   const [enabled, setEnabled] = useState(false)
@@ -10,8 +11,12 @@ export default function Cursor() {
 
   const x = useMotionValue(-100)
   const y = useMotionValue(-100)
-  const ringX = useSpring(x, { stiffness: 350, damping: 30, mass: 0.4 })
-  const ringY = useSpring(y, { stiffness: 350, damping: 30, mass: 0.4 })
+
+  // Two trailing layers, softer springs = more lag = more "liquid".
+  const blobX = useSpring(x, { stiffness: 200, damping: 22, mass: 0.5 })
+  const blobY = useSpring(y, { stiffness: 200, damping: 22, mass: 0.5 })
+  const tailX = useSpring(x, { stiffness: 90, damping: 18, mass: 0.8 })
+  const tailY = useSpring(y, { stiffness: 90, damping: 18, mass: 0.8 })
 
   useEffect(() => {
     const fine = window.matchMedia('(pointer: fine)').matches
@@ -24,9 +29,7 @@ export default function Cursor() {
       y.set(e.clientY)
       setHidden(false)
       const t = e.target
-      setHovering(
-        !!(t.closest && t.closest('a, button, [role="tab"], [data-cursor="hover"]')),
-      )
+      setHovering(!!(t.closest && t.closest('a, button, [role="tab"], [data-cursor="hover"]')))
     }
     const leave = () => setHidden(true)
 
@@ -42,21 +45,36 @@ export default function Cursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[100]" aria-hidden>
+      {/* trailing tail — soft transparent terracotta wake */}
+      <motion.div
+        className="absolute rounded-full bg-brand-accent/20 blur-2xl"
+        style={{
+          x: tailX,
+          y: tailY,
+          translateX: '-50%',
+          translateY: '-50%',
+          opacity: hidden ? 0 : 1,
+        }}
+        animate={{ width: hovering ? 160 : 100, height: hovering ? 160 : 100 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+      />
+      {/* liquid-glass lens — transparent, frosted, refracts what's behind it */}
+      <motion.div
+        className="absolute rounded-full border border-white/30 bg-white/5 shadow-[inset_0_1px_6px_rgba(255,255,255,0.35),0_6px_20px_-8px_rgba(56,41,27,0.35)] backdrop-blur-[3px]"
+        style={{
+          x: blobX,
+          y: blobY,
+          translateX: '-50%',
+          translateY: '-50%',
+          opacity: hidden ? 0 : 1,
+        }}
+        animate={{ width: hovering ? 64 : 40, height: hovering ? 64 : 40 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+      />
+      {/* crisp dot — leads exactly at the pointer */}
       <motion.div
         className="absolute h-1.5 w-1.5 rounded-full bg-brand-accent"
         style={{ x, y, translateX: '-50%', translateY: '-50%', opacity: hidden ? 0 : 1 }}
-      />
-      <motion.div
-        className="absolute rounded-full border border-brand-accent"
-        style={{
-          x: ringX,
-          y: ringY,
-          translateX: '-50%',
-          translateY: '-50%',
-          opacity: hidden ? 0 : hovering ? 1 : 0.5,
-        }}
-        animate={{ width: hovering ? 52 : 30, height: hovering ? 52 : 30 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       />
     </div>
   )
