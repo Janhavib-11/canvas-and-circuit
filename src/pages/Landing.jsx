@@ -185,7 +185,7 @@ export default function Landing() {
           initial={reduce ? false : { scale: 1.03, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.4, ease }}
-          className="absolute inset-y-0 right-0 w-full lg:w-[52%]"
+          className="absolute inset-y-0 right-0 w-full lg:w-[56%]"
         >
           <img
             src="/images/portrait.webp"
@@ -193,11 +193,10 @@ export default function Landing() {
             className="h-full w-full object-cover object-[center_top]"
             style={{ filter: 'sepia(0.14) contrast(1.03) brightness(1.02) saturate(0.92)' }}
           />
-          {/* blend the photo's left edge into the cream */}
-          <div className="absolute inset-0 bg-gradient-to-r from-art-bg via-art-bg/40 to-transparent lg:via-art-bg/15" />
-          {/* soft top / bottom fades */}
-          <div className="absolute inset-0 bg-gradient-to-t from-art-bg via-transparent to-transparent" />
-          <div className="absolute inset-0 mix-blend-multiply bg-brand-accent/5" />
+          {/* feather the photo's left edge into the cream — wide, gradual, no seam */}
+          <div className="absolute inset-0 bg-gradient-to-r from-art-bg from-0% via-art-bg/70 via-30% to-transparent to-70% lg:via-art-bg/40" />
+          {/* soft bottom fade toward the nav strip */}
+          <div className="absolute inset-0 bg-gradient-to-t from-art-bg/60 via-transparent to-transparent" />
         </motion.div>
 
         {/* giant faint monogram, far right */}
