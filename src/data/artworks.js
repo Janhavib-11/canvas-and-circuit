@@ -88,6 +88,36 @@ export const artworks = [
     story: 'A sketchbook page of characters and small experiments.',
     image: art('sketch-doodle'),
   },
+  {
+    id: 'sketch-characters',
+    title: 'Character Page',
+    category: 'Sketches',
+    medium: 'Pencil on paper',
+    year: '2025',
+    ratio: 1.27,
+    story: 'A full spread of characters, eyes and little creatures.',
+    image: art('sketch-characters'),
+  },
+  {
+    id: 'sketch-unfiltered',
+    title: 'Unfiltered',
+    category: 'Sketches',
+    medium: 'Pencil on paper',
+    year: '2025',
+    ratio: 1.33,
+    story: 'Faces and figures, drawn loose and without second-guessing.',
+    image: art('sketch-unfiltered'),
+  },
+  {
+    id: 'sketch-study-page',
+    title: 'Study Page',
+    category: 'Sketches',
+    medium: 'Pencil on paper',
+    year: '2025',
+    ratio: 2.17,
+    story: 'An eye study and a figure, worked up side by side.',
+    image: art('sketch-study-page'),
+  },
 
   // ——— Crafts ———
   {
