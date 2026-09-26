@@ -26,12 +26,12 @@ const artById = Object.fromEntries(artworks.map((a) => [a.id, a]))
 // A scattered gallery-wall collage. Mixed sizes + a few captioned "hero" pieces
 // give the editorial, pinned-to-the-wall feel; each drifts on scroll.
 const heroFrames = [
-  { id: 'portrait-charcoal', top: '13%', left: '3%', w: 168, rot: -5, depth: 60, caption: true },
-  { id: 'still-life-fruit', top: '56%', left: '8%', w: 132, rot: 4, depth: 120 },
-  { id: 'ceramic-set', top: '33%', left: '21%', w: 92, rot: -9, depth: 190 },
-  { id: 'landscape-2', top: '12%', right: '18%', w: 150, rot: 5, depth: 90, caption: true },
-  { id: 'type-study', top: '22%', right: '3%', w: 182, rot: -4, depth: 40, caption: true },
-  { id: 'figure-study', top: '58%', right: '7%', w: 138, rot: 7, depth: 150 },
+  { id: 'painting-portrait', top: '13%', left: '3%', w: 168, rot: -5, depth: 60, caption: true },
+  { id: 'scenery-crimson-sky', top: '56%', left: '8%', w: 140, rot: 4, depth: 120 },
+  { id: 'painting-stitch', top: '33%', left: '21%', w: 96, rot: -9, depth: 190 },
+  { id: 'scenery-blue-hour', top: '12%', right: '18%', w: 150, rot: 5, depth: 90, caption: true },
+  { id: 'painting-kaleido-eye', top: '22%', right: '3%', w: 176, rot: -4, depth: 40, caption: true },
+  { id: 'craft-lotus', top: '58%', right: '7%', w: 138, rot: 7, depth: 150 },
 ]
 
 function HeroFrame({ f, progress }) {
@@ -105,20 +105,27 @@ function GalleryItem({ a, index, onOpen }) {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: (index % 3) * 0.12 }}
-          className="group relative block w-full overflow-hidden rounded-sm border border-art-line text-left"
+          className="group block w-full text-left"
         >
-          <LazyImage
-            src={a.image}
-            alt={a.title}
-            ratio={a.ratio}
-            imgClassName="transition-transform duration-700 group-hover:scale-105"
-          />
-          <div className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <div className="p-4">
-              <p className="font-display text-lg text-white">{a.title}</p>
-              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/70">
-                {a.medium} · {a.year}
-              </p>
+          {/* matted gallery-print frame */}
+          <div className="relative rounded-xl border border-art-line/70 bg-sand p-2 shadow-[0_16px_38px_-24px_rgba(56,41,27,0.55)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_28px_56px_-24px_rgba(56,41,27,0.6)]">
+            <div className="relative overflow-hidden rounded-lg">
+              <LazyImage
+                src={a.image}
+                alt={a.title}
+                ratio={a.ratio}
+                imgClassName="transition-transform duration-700 group-hover:scale-[1.06]"
+              />
+              <div className="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="p-4">
+                  <p className="font-display text-lg text-white">{a.title}</p>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/70">
+                    {a.medium} · {a.year}
+                  </p>
+                </div>
+              </div>
+              {/* subtle inner ring, warms on hover */}
+              <span className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-art-ink/5 transition-colors duration-300 group-hover:ring-brand-accent/40" />
             </div>
           </div>
         </motion.button>
@@ -268,7 +275,7 @@ export default function Creative() {
 
         {/* mediums index along the bottom */}
         <div className="absolute inset-x-0 bottom-6 z-10 hidden items-center justify-center gap-4 label text-art-muted md:flex">
-          {['Paintings', 'Sketches', 'Crafts', 'Graphic Design', 'Digital'].map((m, i) => (
+          {['Paintings', 'Sketches', 'Crafts', 'Scenery', 'Photography'].map((m, i) => (
             <span key={m} className="flex items-center gap-4">
               {i > 0 && <span className="text-art-accent/60">✦</span>}
               {m}

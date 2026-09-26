@@ -16,22 +16,22 @@ const CHARACTERS = [
   {
     name: 'THE ARTIST',
     note: 'Colour & canvas',
-    image: 'https://picsum.photos/seed/ochre/700/900',
-    alt: 'A painting in warm ochres',
+    image: '/images/art/painting-kaleido-eye.jpg',
+    alt: 'A vivid acrylic eye painting',
     accent: '#C1683C',
   },
   {
     name: 'THE MAKER',
     note: 'Hands-on craft',
-    image: 'https://picsum.photos/seed/ceramic/900/720',
-    alt: 'A hand-thrown ceramic set',
+    image: '/images/art/craft-lotus.jpg',
+    alt: 'A quilled paper lotus relief',
     accent: '#6A6A45',
   },
   {
     name: 'THE DREAMER',
     note: 'Ideas & experiments',
-    image: 'https://picsum.photos/seed/signal/700/875',
-    alt: 'A digital, generative experiment',
+    image: '/images/art/painting-indigo.jpg',
+    alt: 'A fluid indigo acrylic pour',
     accent: '#B7794F',
   },
 ]
