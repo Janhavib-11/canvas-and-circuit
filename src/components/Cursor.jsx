@@ -1,75 +1,114 @@
-import { useEffect, useState } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
-// Liquid cursor: a crisp dot leads, and two soft, transparent blurred blobs
-// trail behind it with different spring lags — a gooey, liquid wake.
-// Auto-disabled on touch devices and when the user prefers reduced motion.
+// Custom cursor follower — LERP-based inertia (manual rAF, not springs) gives
+// smooth trailing lag. Contextual hover/magnetic states: over an interactive
+// element the follower snaps to its centre and morphs into a rounded highlight
+// hugging it. Disabled on touch devices and for reduced-motion.
+const BASE = 32
+const EASE = 0.15 // trailing lag on free move
+const EASE_SNAP = 0.22 // a touch faster when locking onto a target
+const lerp = (a, b, t) => a + (b - a) * t
+
 export default function Cursor() {
   const [enabled, setEnabled] = useState(false)
-  const [hovering, setHovering] = useState(false)
-  const [hidden, setHidden] = useState(true)
-
-  const x = useMotionValue(-100)
-  const y = useMotionValue(-100)
-
-  // Two trailing layers, softer springs = more lag = more "liquid".
-  const blobX = useSpring(x, { stiffness: 200, damping: 22, mass: 0.5 })
-  const blobY = useSpring(y, { stiffness: 200, damping: 22, mass: 0.5 })
-  const tailX = useSpring(x, { stiffness: 90, damping: 18, mass: 0.8 })
-  const tailY = useSpring(y, { stiffness: 90, damping: 18, mass: 0.8 })
+  const ref = useRef(null)
 
   useEffect(() => {
     const fine = window.matchMedia('(pointer: fine)').matches
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!fine || reduce) return
-    setEnabled(true)
+    if (fine && !reduce) setEnabled(true)
+  }, [])
 
-    const move = (e) => {
-      x.set(e.clientX)
-      y.set(e.clientY)
-      setHidden(false)
-      const t = e.target
-      setHovering(!!(t.closest && t.closest('a, button, [role="tab"], [data-cursor="hover"]')))
+  useEffect(() => {
+    if (!enabled) return
+    const el = ref.current
+    if (!el) return
+
+    let mouseX = window.innerWidth / 2
+    let mouseY = window.innerHeight / 2
+    let visible = false
+    let hoverRect = null // set when magnetically locked to an element
+
+    // current, lerped state
+    const cur = { x: mouseX, y: mouseY, w: BASE, h: BASE, r: BASE / 2, o: 0 }
+
+    const findTarget = (t) =>
+      t && t.closest ? t.closest('a, button, [role="tab"], [data-cursor="hover"]') : null
+
+    const onMove = (e) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+      visible = true
+      const target = findTarget(e.target)
+      hoverRect = target ? target.getBoundingClientRect() : null
     }
-    const leave = () => setHidden(true)
+    const onLeave = () => {
+      visible = false
+    }
+    const clearHover = () => {
+      hoverRect = null
+    }
 
-    window.addEventListener('mousemove', move)
-    document.addEventListener('mouseleave', leave)
+    let raf
+    const tick = () => {
+      let tx, ty, tw, th, tr, ease
+      if (hoverRect) {
+        // magnetic: pull to the element's centre and wrap it as a highlight
+        tx = hoverRect.left + hoverRect.width / 2
+        ty = hoverRect.top + hoverRect.height / 2
+        tw = hoverRect.width + 18
+        th = hoverRect.height + 14
+        tr = 14
+        ease = EASE_SNAP
+      } else {
+        tx = mouseX
+        ty = mouseY
+        tw = BASE
+        th = BASE
+        tr = BASE / 2
+        ease = EASE
+      }
+      cur.x = lerp(cur.x, tx, ease)
+      cur.y = lerp(cur.y, ty, ease)
+      cur.w = lerp(cur.w, tw, ease)
+      cur.h = lerp(cur.h, th, ease)
+      cur.r = lerp(cur.r, tr, ease)
+      cur.o = lerp(cur.o, visible ? 1 : 0, 0.2)
+
+      el.style.transform = `translate(${cur.x}px, ${cur.y}px) translate(-50%, -50%)`
+      el.style.width = `${cur.w}px`
+      el.style.height = `${cur.h}px`
+      el.style.borderRadius = `${cur.r}px`
+      el.style.opacity = String(cur.o)
+      raf = requestAnimationFrame(tick)
+    }
+
+    raf = requestAnimationFrame(tick)
+    window.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseleave', onLeave)
+    window.addEventListener('scroll', clearHover, true)
     return () => {
-      window.removeEventListener('mousemove', move)
-      document.removeEventListener('mouseleave', leave)
+      cancelAnimationFrame(raf)
+      window.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseleave', onLeave)
+      window.removeEventListener('scroll', clearHover, true)
     }
-  }, [x, y])
+  }, [enabled])
 
   if (!enabled) return null
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[100]" aria-hidden>
-      {/* trailing tail — soft transparent terracotta wake */}
-      <motion.div
-        className="absolute rounded-full bg-brand-accent/20 blur-2xl"
+      <div
+        ref={ref}
+        className="absolute left-0 top-0 border border-brand-accent/60 bg-brand-accent/[0.06] backdrop-blur-[2px]"
         style={{
-          x: tailX,
-          y: tailY,
-          translateX: '-50%',
-          translateY: '-50%',
-          opacity: hidden ? 0 : 1,
+          width: BASE,
+          height: BASE,
+          borderRadius: 999,
+          opacity: 0,
+          willChange: 'transform, width, height, border-radius',
         }}
-        animate={{ width: hovering ? 160 : 100, height: hovering ? 160 : 100 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-      />
-      {/* liquid-glass lens — transparent, frosted, refracts what's behind it */}
-      <motion.div
-        className="absolute rounded-full border border-white/30 bg-white/5 shadow-[inset_0_1px_6px_rgba(255,255,255,0.35),0_6px_20px_-8px_rgba(56,41,27,0.35)] backdrop-blur-[3px]"
-        style={{
-          x: blobX,
-          y: blobY,
-          translateX: '-50%',
-          translateY: '-50%',
-          opacity: hidden ? 0 : 1,
-        }}
-        animate={{ width: hovering ? 72 : 46, height: hovering ? 72 : 46 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
       />
     </div>
   )
