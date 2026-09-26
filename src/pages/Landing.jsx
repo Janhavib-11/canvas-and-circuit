@@ -6,6 +6,7 @@ import Marquee from '../components/Marquee.jsx'
 import Sprig from '../components/Sprig.jsx'
 import CharacterSwitcherCard from '../components/ui/character-switcher.jsx'
 import Footer from '../components/Footer.jsx'
+import LiquidReveal from '../components/LiquidReveal.jsx'
 import { Icon } from '../components/SocialLinks.jsx'
 import { site } from '../data/site.js'
 import { useSEO } from '../hooks/useSEO.js'
@@ -187,12 +188,7 @@ export default function Landing() {
           transition={{ duration: 1.4, ease }}
           className="absolute inset-y-0 right-0 w-full lg:w-[56%]"
         >
-          <img
-            src="/images/portrait.webp"
-            alt="Janhavi Bawankule"
-            className="h-full w-full object-cover object-[center_top]"
-            style={{ filter: 'sepia(0.14) contrast(1.03) brightness(1.02) saturate(0.92)' }}
-          />
+          <LiquidReveal src="/images/portrait.webp" alt="Janhavi Bawankule" objectPosition="center top" />
           {/* feather the photo's left edge into the cream — wide, gradual, no seam */}
           <div className="absolute inset-0 bg-gradient-to-r from-art-bg from-0% via-art-bg/70 via-30% to-transparent to-70% lg:via-art-bg/40" />
           {/* soft bottom fade toward the nav strip */}
