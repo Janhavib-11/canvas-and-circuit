@@ -68,13 +68,8 @@ export default function Cursor() {
           translateY: '-50%',
           opacity: hidden ? 0 : 1,
         }}
-        animate={{ width: hovering ? 64 : 40, height: hovering ? 64 : 40 }}
+        animate={{ width: hovering ? 72 : 46, height: hovering ? 72 : 46 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      />
-      {/* crisp dot — leads exactly at the pointer */}
-      <motion.div
-        className="absolute h-1.5 w-1.5 rounded-full bg-brand-accent"
-        style={{ x, y, translateX: '-50%', translateY: '-50%', opacity: hidden ? 0 : 1 }}
       />
     </div>
   )
