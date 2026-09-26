@@ -10,8 +10,10 @@ export default function LiquidReveal({
   alt = '',
   className = '',
   objectPosition = 'center top',
-  baseFilter = 'grayscale(0.85) contrast(1.05) brightness(0.92)',
-  revealFilter = 'sepia(0.12) saturate(1.06) contrast(1.02) brightness(1.02)',
+  // Base stays in original colour (just gently muted); the brush reveals a
+  // brighter, more saturated version — a subtle liquid pop, never B/W.
+  baseFilter = 'saturate(0.82) contrast(1.02) brightness(0.97)',
+  revealFilter = 'saturate(1.28) contrast(1.06) brightness(1.06)',
   brushRadius = 143,
   decay = 0.016,
 }) {
